@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient, Todo } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import ITodo from '../../types/todo';
 
 const prisma = new PrismaClient();
 
 type Data = {
-  todos: Todo[];
+  todos: ITodo[];
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     try {
       const todos = await prisma.todo.findMany();
@@ -25,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     try {
       const newTodo = await prisma.todo.create({ data: { body } });
 
-      res.status(201).send('Created');
+      res.send('Created');
     } catch (error) {
       console.error(error);
     }
